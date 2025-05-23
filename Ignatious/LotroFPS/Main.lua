@@ -25,12 +25,14 @@ local isPointing = false;
 local isPunching = false;
 local isHorning = false;
 local isMounted = false;
-local mountChecked = false;
+    local mountChecked = false;
+    local isRiding = false;
 
 local timerTen = 0;
 local timerEnd = 11;
-
-RESOURCEDIR = "Ignatious/LotroFPS/Resources/";
+local timerM = 0;
+local timerMEnd = 11;
+ResourceDir = "Ignatious/LotroFPS/Resources/";
 thePlayer = Turbine.Gameplay.LocalPlayer.GetInstance();
 --playerClass = thePlayer:GetClass();
 --allSkills = thePlayer:GetTrainedSkills();
@@ -501,31 +503,31 @@ function Main.animateState()
         -- Idling should be true when every other state is false.
     if isIdling == true then
         Frames = {
-        [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "DefaultFrame.tga"); ["TIME"] = 3.5; };
-        [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle1.tga"); ["TIME"] = 0.225; };
-        [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle2.tga"); ["TIME"] = 0.225; };
-        [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle3.tga"); ["TIME"] = 0.225; };
-        [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle4.tga"); ["TIME"] = 0.225; };
-        [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle5.tga"); ["TIME"] = 0.225; };
-        [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle6.tga"); ["TIME"] = 0.15; };
-        [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle7.tga"); ["TIME"] = 0.15; };
-        [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle8.tga"); ["TIME"] = 0.15; };
-        [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Idle9.tga"); ["TIME"] = 0.2; };
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 3.5; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle1.tga"); ["TIME"] = 0.225; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle2.tga"); ["TIME"] = 0.225; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle3.tga"); ["TIME"] = 0.225; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle4.tga"); ["TIME"] = 0.225; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle5.tga"); ["TIME"] = 0.225; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle6.tga"); ["TIME"] = 0.15; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle7.tga"); ["TIME"] = 0.15; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle8.tga"); ["TIME"] = 0.15; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle9.tga"); ["TIME"] = 0.2; };
         }
         return Main
     end
     if isStriking == true then
         Frames = {
-        [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "DefaultFrame.tga"); ["TIME"] = .1; };
-        [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike1.tga"); ["TIME"] = 0.05; };
-        [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike2.tga"); ["TIME"] = 0.025; };
-        [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike3.tga"); ["TIME"] = 0.05; };
-        [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike4.tga"); ["TIME"] = 0.025; };
-        [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike5.tga"); ["TIME"] = 0.05; };
-        [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike6.tga"); ["TIME"] = 0.05; };
-        [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike78.tga"); ["TIME"] = 0.1; };
-        [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike78.tga"); ["TIME"] = 0.1; };
-        [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Strike9.tga"); ["TIME"] = 0.1; };
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = .1; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike1.tga"); ["TIME"] = 0.05; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike2.tga"); ["TIME"] = 0.025; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike3.tga"); ["TIME"] = 0.05; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike4.tga"); ["TIME"] = 0.025; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike5.tga"); ["TIME"] = 0.05; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike6.tga"); ["TIME"] = 0.05; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike9.tga"); ["TIME"] = 0.1; };
         }
         return Main
     end
@@ -539,7 +541,7 @@ end
 --- Does not animate both windows at the same time
 --- Overriding the animation with another such as an emote overrides the mount window entirely
 function Main.handInterface()
-    mountWindow = Turbine.UI.Window();
+    mountWindow = Turbine.UI.Control();
     mountWindow:SetSize(1414, 1075);
     mountWindow:SetWantsUpdates(true);
     mountWindow.frame = 10;
@@ -549,8 +551,8 @@ function Main.handInterface()
 
         if (deltaM > Frames[mountWindow.frame]["TIME"]) then
             mountWindow.frame = mountWindow.frame + 1;
-            if TimerM ~= 0 then
-                Turbine.Shell.WriteLine("Timer TenM " .. TimerMEnd);
+            if timerM ~= 0 then
+                Turbine.Shell.WriteLine("Timer TenM " .. timerMEnd);
             end
             if (mountWindow.frame > 10) then
                 mountWindow.frame = 1;
@@ -560,32 +562,50 @@ function Main.handInterface()
 
             playerMount = nil;
             playerMount = thePlayer:GetMount();
+            if (playerMount ~= nil) then
+			    isMounted = true;
+		    else
+			    isMounted = false;
+		    end
             if (mountChecked == false) then
                 if isMounted == false then
                     mountChecked = true;
                     Main.getPlayerState();
+                    Main.animateState();
                 end
                 if isMounted == true then
-                    isMounted = false;
+                    mountChecked = true;
+                    isRiding = true;
                     Frames = {
-                        [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse1.tga"); ["TIME"] = .15; };
-                        [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse2.tga"); ["TIME"] = 0.2; };
-                        [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse3.tga"); ["TIME"] = 0.2; };
-                        [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse4.tga"); ["TIME"] = 0.2; };
-                        [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse5.tga"); ["TIME"] = 0.2; };
-                        [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse6.tga"); ["TIME"] = 0.2; };
-                        [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse7.tga"); ["TIME"] = 0.2; };
-                        [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse8.tga"); ["TIME"] = 0.2; };
-                        [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse9.tga"); ["TIME"] = 0.2; };
-                        [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse1.tga"); ["TIME"] = 0.15; };
+                        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = .15; };
+                        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse2.tga"); ["TIME"] = 0.2; };
+                        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse3.tga"); ["TIME"] = 0.2; };
+                        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse4.tga"); ["TIME"] = 0.2; };
+                        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse5.tga"); ["TIME"] = 0.2; };
+                        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse6.tga"); ["TIME"] = 0.2; };
+                        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse7.tga"); ["TIME"] = 0.2; };
+                        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse8.tga"); ["TIME"] = 0.2; };
+                        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse9.tga"); ["TIME"] = 0.2; };
+                        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = 0.15; };
                     }
+                end
+            else
+                if (isRiding == true) then
+                    if (mountChecked == true) then
+                        if (isMounted == false) then
+                            Main.getPlayerState();
+                            Main.animateState();
+                            Main.handInterface();
+                            isRiding = false;
+                        end
+                    end
                 end
             end
         end
     end
 
     ----------- Hands Interface ---------------------
-    handsWindow = Turbine.UI.Control();
+    handsWindow = Turbine.UI.Window();
     handsWindow:SetSize(1414, 1075);
     handsWindow:SetWantsUpdates(true);
     handsWindow.frame = 10;
@@ -634,16 +654,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "DefaultFrame.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave3.tga"); ["TIME"] = 0.2; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave4.tga"); ["TIME"] = 0.2; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave6.tga"); ["TIME"] = 0.2; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave7.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Wave9.tga"); ["TIME"] = 0.15; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave3.tga"); ["TIME"] = 0.2; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave4.tga"); ["TIME"] = 0.2; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave6.tga"); ["TIME"] = 0.2; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave9.tga"); ["TIME"] = 0.15; };
                 }
             end
             if isShouting == true then
@@ -651,16 +671,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout4.tga"); ["TIME"] = 0.1; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout6.tga"); ["TIME"] = 0.25; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout7.tga"); ["TIME"] = 0.2; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Shout9.tga"); ["TIME"] = 0.1; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout4.tga"); ["TIME"] = 0.1; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout6.tga"); ["TIME"] = 0.25; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout7.tga"); ["TIME"] = 0.2; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout9.tga"); ["TIME"] = 0.1; };
                 }
             end
             if isShoutingB == true then
@@ -668,16 +688,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB4.tga"); ["TIME"] = 0.1; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB6.tga"); ["TIME"] = 0.25; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB7.tga"); ["TIME"] = 0.2; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "ShoutB9.tga"); ["TIME"] = 0.1; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB4.tga"); ["TIME"] = 0.1; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB6.tga"); ["TIME"] = 0.25; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB7.tga"); ["TIME"] = 0.2; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB9.tga"); ["TIME"] = 0.1; };
                 }
             end
             if isSmoking == true then
@@ -691,16 +711,16 @@ function Main.handInterface()
                 isIdling = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "PipeDefault.tga"); ["TIME"] = 1; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe1.tga"); ["TIME"] = 0.15; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe2.tga"); ["TIME"] = 0.15; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe3.tga"); ["TIME"] = 0.15; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe4.tga"); ["TIME"] = 0.3; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe5.tga"); ["TIME"] = 0.2 };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe6.tga"); ["TIME"] = 0.4; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe7.tga"); ["TIME"] = 0.2; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe8.tga"); ["TIME"] = 0.2; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Pipe9.tga"); ["TIME"] = 0.2; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "PipeDefault.tga"); ["TIME"] = 1; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe1.tga"); ["TIME"] = 0.15; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe2.tga"); ["TIME"] = 0.15; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe3.tga"); ["TIME"] = 0.15; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe4.tga"); ["TIME"] = 0.3; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe5.tga"); ["TIME"] = 0.2 };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe6.tga"); ["TIME"] = 0.4; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe7.tga"); ["TIME"] = 0.2; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe8.tga"); ["TIME"] = 0.2; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe9.tga"); ["TIME"] = 0.2; };
                 }
             end
             if isParrying == true then
@@ -708,16 +728,16 @@ function Main.handInterface()
                 isIdling = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry4.tga"); ["TIME"] = 0.2; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry6.tga"); ["TIME"] = 0.2; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry7.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Parry9.tga"); ["TIME"] = 0.1; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry4.tga"); ["TIME"] = 0.2; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry6.tga"); ["TIME"] = 0.2; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry9.tga"); ["TIME"] = 0.1; };
                 }
             end
             if isAttackingA == true then
@@ -725,16 +745,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA2.tga"); ["TIME"] = 0.15; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA3.tga"); ["TIME"] = 0; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA4.tga"); ["TIME"] = 0.05; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA5.tga"); ["TIME"] = 0.05; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA6.tga"); ["TIME"] = 0.05; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA7.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA8.tga"); ["TIME"] = 0.05; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "AttackA9.tga"); ["TIME"] = 0.05; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA2.tga"); ["TIME"] = 0.15; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA3.tga"); ["TIME"] = 0; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA4.tga"); ["TIME"] = 0.05; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA5.tga"); ["TIME"] = 0.05; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA6.tga"); ["TIME"] = 0.05; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA8.tga"); ["TIME"] = 0.05; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA9.tga"); ["TIME"] = 0.05; };
                 }
             end
             if isStabbing == true then
@@ -742,16 +762,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab4.tga"); ["TIME"] = 0; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab6.tga"); ["TIME"] = 0.2; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab7.tga"); ["TIME"] = 0.15; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab8.tga"); ["TIME"] = 0.15; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Stab9.tga"); ["TIME"] = 0.15; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab4.tga"); ["TIME"] = 0; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab6.tga"); ["TIME"] = 0.2; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab7.tga"); ["TIME"] = 0.15; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab8.tga"); ["TIME"] = 0.15; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab9.tga"); ["TIME"] = 0.15; };
                 }
             end
             if isPointing == true then
@@ -759,16 +779,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point4.tga"); ["TIME"] = 0.2; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point6.tga"); ["TIME"] = 0.2; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point7.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Point9.tga"); ["TIME"] = 0.1; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point2.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point4.tga"); ["TIME"] = 0.2; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point5.tga"); ["TIME"] = 0.2; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point6.tga"); ["TIME"] = 0.2; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point9.tga"); ["TIME"] = 0.1; };
                 }
             end
             if isPunching == true then
@@ -776,16 +796,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch2.tga"); ["TIME"] = 0.2; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch3.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch4.tga"); ["TIME"] = 0.1; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch5.tga"); ["TIME"] = 0.1; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch6.tga"); ["TIME"] = 0.1; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch7.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch8.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Punch8.tga"); ["TIME"] = 0; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch1.tga"); ["TIME"] = 0; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch1.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch2.tga"); ["TIME"] = 0.2; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch3.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch4.tga"); ["TIME"] = 0.1; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch5.tga"); ["TIME"] = 0.1; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch6.tga"); ["TIME"] = 0.1; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch8.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch8.tga"); ["TIME"] = 0; };
                 }
             end
             if isHorning == true then
@@ -793,16 +813,16 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn1.tga"); ["TIME"] = 0.06; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn2.tga"); ["TIME"] = 0.06; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn3.tga"); ["TIME"] = 0.06; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn4.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn5.tga"); ["TIME"] = 0.3; };
-                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn6.tga"); ["TIME"] = 0.3; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn7.tga"); ["TIME"] = 0.3; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn8.tga"); ["TIME"] = 0.1; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn9.tga"); ["TIME"] = 0.1; };
-                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horn10.tga"); ["TIME"] = 0.1; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn1.tga"); ["TIME"] = 0.06; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn2.tga"); ["TIME"] = 0.06; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn3.tga"); ["TIME"] = 0.06; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn4.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn5.tga"); ["TIME"] = 0.3; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn6.tga"); ["TIME"] = 0.3; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn7.tga"); ["TIME"] = 0.3; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn8.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn9.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn10.tga"); ["TIME"] = 0.1; };
                 }
             end
         end
