@@ -1,4 +1,3 @@
--- Github test
 ---------------------------------------------------------------------------------------------------
 -------- Imports ----------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -25,14 +24,18 @@ local isStabbing = false;
 local isPointing = false;
 local isPunching = false;
 local isHorning = false;
+local isMounted = false;
+local mountChecked = false;
+
 local timerTen = 0;
 local timerEnd = 11;
 
 RESOURCEDIR = "Ignatious/LotroFPS/Resources/";
 thePlayer = Turbine.Gameplay.LocalPlayer.GetInstance();
-playerClass = thePlayer:GetClass();
-allSkills = thePlayer:GetTrainedSkills();
+--playerClass = thePlayer:GetClass();
+--allSkills = thePlayer:GetTrainedSkills();
 playerName = Turbine.Gameplay.LocalPlayer.GetName();
+playerMount = thePlayer:GetMount();
 
 Turbine.Shell.WriteLine("Lotro FPS Loaded!");
 
@@ -53,6 +56,16 @@ function Main.getPlayerState()
         Turbine.Shell.WriteLine("The player is not in combat!");
         isStriking = false;
         isIdling = true;
+    end
+    if playerMount == nil then
+		-- Not mounted
+        isMounted = false;
+        mountChecked = false;
+        Turbine.Shell.WriteLine("The player is not mounted!");
+	else
+		-- Mounted 
+        isMounted = true;
+        Turbine.Shell.WriteLine("The player is mounted!");
     end
 end
 
@@ -519,11 +532,60 @@ function Main.animateState()
 end
 
 ---------------------------------------------------------------------------------------------------
--------- Hands Window Settings and function -------------------------------------------------------
+-------- Window Settings and Functions -----=====--------------------------------------------------
 ---------------------------------------------------------------------------------------------------
-
+----------- Mount Interface ---------------------
+---- Currently works for getting on the horse, but no off the horse
+--- Does not animate both windows at the same time
+--- Overriding the animation with another such as an emote overrides the mount window entirely
 function Main.handInterface()
-    handsWindow = Turbine.UI.Window();
+    mountWindow = Turbine.UI.Window();
+    mountWindow:SetSize(1414, 1075);
+    mountWindow:SetWantsUpdates(true);
+    mountWindow.frame = 10;
+    mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
+    mountWindow.Update = function(sender, args)
+        local deltaM = Turbine.Engine.GetGameTime() - mountWindow.LastUpdated;
+
+        if (deltaM > Frames[mountWindow.frame]["TIME"]) then
+            mountWindow.frame = mountWindow.frame + 1;
+            if TimerM ~= 0 then
+                Turbine.Shell.WriteLine("Timer TenM " .. TimerMEnd);
+            end
+            if (mountWindow.frame > 10) then
+                mountWindow.frame = 1;
+            end
+            mountWindow:SetBackground(Frames[mountWindow.frame]["IMAGE"]);
+            mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
+
+            playerMount = nil;
+            playerMount = thePlayer:GetMount();
+            if (mountChecked == false) then
+                if isMounted == false then
+                    mountChecked = true;
+                    Main.getPlayerState();
+                end
+                if isMounted == true then
+                    isMounted = false;
+                    Frames = {
+                        [1] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse1.tga"); ["TIME"] = .15; };
+                        [2] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse2.tga"); ["TIME"] = 0.2; };
+                        [3] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse3.tga"); ["TIME"] = 0.2; };
+                        [4] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse4.tga"); ["TIME"] = 0.2; };
+                        [5] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse5.tga"); ["TIME"] = 0.2; };
+                        [6] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse6.tga"); ["TIME"] = 0.2; };
+                        [7] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse7.tga"); ["TIME"] = 0.2; };
+                        [8] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse8.tga"); ["TIME"] = 0.2; };
+                        [9] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse9.tga"); ["TIME"] = 0.2; };
+                        [10] = { ["IMAGE"] = Turbine.UI.Graphic(RESOURCEDIR .. "Horse1.tga"); ["TIME"] = 0.15; };
+                    }
+                end
+            end
+        end
+    end
+
+    ----------- Hands Interface ---------------------
+    handsWindow = Turbine.UI.Control();
     handsWindow:SetSize(1414, 1075);
     handsWindow:SetWantsUpdates(true);
     handsWindow.frame = 10;
@@ -745,6 +807,11 @@ function Main.handInterface()
             end
         end
     end
+    mountWindow:SetVisible(true);
+    mountWindow:SetPosition(1920 / 2 - mountWindow:GetWidth() / 2, 1080 - mountWindow:GetHeight());
+    mountWindow:SetMouseVisible(0);
+    mountWindow:SetZOrder(-2);
+
     handsWindow:SetVisible(true);
     handsWindow:SetPosition(1920 / 2 - handsWindow:GetWidth() / 2, 1080 - handsWindow:GetHeight());
     handsWindow:SetMouseVisible(0);
