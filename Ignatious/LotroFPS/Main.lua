@@ -568,11 +568,6 @@ function Main.handInterface()
 			    isMounted = false;
 		    end
             if (mountChecked == false) then
-                if isMounted == false then
-                    mountChecked = true;
-                    Main.getPlayerState();
-                    Main.animateState();
-                end
                 if isMounted == true then
                     mountChecked = true;
                     isRiding = true;
