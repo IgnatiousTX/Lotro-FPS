@@ -1,3 +1,8 @@
+---- Class Related Notes
+-- Captain, skills work great, timing could be tweaked but transitions feel good.
+-- Minstrel, the constant attack animation during combat makes the transition to range attacks rather jarring.
+-- Mariner, untested.
+
 ---------------------------------------------------------------------------------------------------
 -------- Imports ----------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -24,9 +29,13 @@ local isStabbing = false;
 local isPointing = false;
 local isPunching = false;
 local isHorning = false;
+local isLuting = false;
+local isLuteAttacking = false;
 local isMounted = false;
     local mountChecked = false;
     local isRiding = false;
+
+local colorHeal = Turbine.UI.Color(0.5,0.04,0.41,0.09);
 
 local timerTen = 0;
 local timerEnd = 11;
@@ -220,6 +229,17 @@ Turbine.Chat.Received = function(sender, args)
                 isParrying = true;
                 Main.handInterface()
             end
+            ------- Minstrel -------
+            if whichSkill == string.find(textWithoutMarkup, playerName .. " applied a benefit with Major Ballad") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used a Major Ballad!");
+                isLuting = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup, playerName .. " applied a benefit with Raise the Spirit") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Raise the Spirit!");
+                isLuting = true;
+                Main.handInterface()
+            end
         end
         local findSkillResults = string.find(textWithoutMarkup, playerName .. " scored a hit"); 
         if (findSkillResults ~= nil) then
@@ -239,11 +259,12 @@ Turbine.Chat.Received = function(sender, args)
                 isAttackingA = true;
                 Main.handInterface()
             end
-            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Cutting Attack") then
-                Turbine.Shell.WriteLine("Lotro FPS detected that you used Cutting Attack!");
-                isAttackingA = true;
-                Main.handInterface()
-            end
+            -- DOT affect that does not work well with the code
+            --if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Cutting Attack") then
+            --    Turbine.Shell.WriteLine("Lotro FPS detected that you used Cutting Attack!");
+            --    isAttackingA = true;
+            --    Main.handInterface()
+            --end
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Devastating Blow") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Devastating Blow!");
                 isPunching = true;
@@ -259,7 +280,7 @@ Turbine.Chat.Received = function(sender, args)
                 isStabbing = true;
                 Main.handInterface()
             end
-            -- Mariner --
+            ------- Mariner -------
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Thrust") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Thrust!");
                 isStabbing = true;
@@ -298,6 +319,37 @@ Turbine.Chat.Received = function(sender, args)
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Flèche") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Draining Flèche!");
                 isStabbing = true;
+                Main.handInterface()
+            end
+            ------- Minstrel -------
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Minor Ballad") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used a Minor Ballad!");
+                isLuteAttacking = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Coda of Fury") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Coda of Fury!");
+                isLuting = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Coda of Melody") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Coda of Melody!");
+                isLuting = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Healer's Strike") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Healer's Strike!");
+                isAttackingA = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Hero's Strike") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Hero's Strike!");
+                isAttackingA = true;
+                Main.handInterface()
+            end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Dissonant Strike") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you used Dissonant Strike!");
+                isAttackingA = true;
                 Main.handInterface()
             end
         end
@@ -536,73 +588,14 @@ end
 ---------------------------------------------------------------------------------------------------
 -------- Window Settings and Functions -----=====--------------------------------------------------
 ---------------------------------------------------------------------------------------------------
------------ Mount Interface ---------------------
----- Currently works for getting on the horse, but no off the horse
---- Does not animate both windows at the same time
---- Overriding the animation with another such as an emote overrides the mount window entirely
 function Main.handInterface()
-    mountWindow = Turbine.UI.Control();
-    mountWindow:SetSize(1414, 1075);
-    mountWindow:SetWantsUpdates(true);
-    mountWindow.frame = 10;
-    mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
-    mountWindow.Update = function(sender, args)
-        local deltaM = Turbine.Engine.GetGameTime() - mountWindow.LastUpdated;
-
-        if (deltaM > Frames[mountWindow.frame]["TIME"]) then
-            mountWindow.frame = mountWindow.frame + 1;
-            if timerM ~= 0 then
-                Turbine.Shell.WriteLine("Timer TenM " .. timerMEnd);
-            end
-            if (mountWindow.frame > 10) then
-                mountWindow.frame = 1;
-            end
-            mountWindow:SetBackground(Frames[mountWindow.frame]["IMAGE"]);
-            mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
-
-            playerMount = nil;
-            playerMount = thePlayer:GetMount();
-            if (playerMount ~= nil) then
-			    isMounted = true;
-		    else
-			    isMounted = false;
-		    end
-            if (mountChecked == false) then
-                if isMounted == true then
-                    mountChecked = true;
-                    isRiding = true;
-                    Frames = {
-                        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = .15; };
-                        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse2.tga"); ["TIME"] = 0.2; };
-                        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse3.tga"); ["TIME"] = 0.2; };
-                        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse4.tga"); ["TIME"] = 0.2; };
-                        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse5.tga"); ["TIME"] = 0.2; };
-                        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse6.tga"); ["TIME"] = 0.2; };
-                        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse7.tga"); ["TIME"] = 0.2; };
-                        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse8.tga"); ["TIME"] = 0.2; };
-                        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse9.tga"); ["TIME"] = 0.2; };
-                        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = 0.15; };
-                    }
-                end
-            else
-                if (isRiding == true) then
-                    if (mountChecked == true) then
-                        if (isMounted == false) then
-                            Main.getPlayerState();
-                            Main.animateState();
-                            Main.handInterface();
-                            isRiding = false;
-                        end
-                    end
-                end
-            end
-        end
-    end
-
     ----------- Hands Interface ---------------------
     handsWindow = Turbine.UI.Window();
     handsWindow:SetSize(1414, 1075);
     handsWindow:SetWantsUpdates(true);
+    -- I tried to set the parent here in an attempt to get them both to animate simultaneously.
+    -- For some reason all this did was move the position of the windows
+    --mountWindow:SetParent(handsWindow);
     handsWindow.frame = 10;
     handsWindow.LastUpdated = Turbine.Engine.GetGameTime();
     handsWindow.Update = function(sender, args)
@@ -758,14 +751,14 @@ function Main.handInterface()
                 timerEnd = timerTen + 9;
                 Frames = {
                     [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0.1; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab2.tga"); ["TIME"] = 0.1; };
-                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab3.tga"); ["TIME"] = 0.1; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0.05; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab2.tga"); ["TIME"] = 0.05; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab3.tga"); ["TIME"] = 0.05; };
                     [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab4.tga"); ["TIME"] = 0; };
                     [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab5.tga"); ["TIME"] = 0.2; };
-                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab6.tga"); ["TIME"] = 0.2; };
-                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab7.tga"); ["TIME"] = 0.15; };
-                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab8.tga"); ["TIME"] = 0.15; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab6.tga"); ["TIME"] = 0.1; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab7.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab8.tga"); ["TIME"] = 0.1; };
                     [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab9.tga"); ["TIME"] = 0.15; };
                 }
             end
@@ -808,11 +801,11 @@ function Main.handInterface()
                 idleReset = true;
                 timerEnd = timerTen + 9;
                 Frames = {
-                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn1.tga"); ["TIME"] = 0.06; };
-                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn2.tga"); ["TIME"] = 0.06; };
-                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn3.tga"); ["TIME"] = 0.06; };
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn1.tga"); ["TIME"] = 0.075; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn2.tga"); ["TIME"] = 0.075; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn3.tga"); ["TIME"] = 0.075; };
                     [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn4.tga"); ["TIME"] = 0.1; };
-                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn5.tga"); ["TIME"] = 0.3; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn5.tga"); ["TIME"] = 0.25; };
                     [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn6.tga"); ["TIME"] = 0.3; };
                     [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn7.tga"); ["TIME"] = 0.3; };
                     [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn8.tga"); ["TIME"] = 0.1; };
@@ -820,17 +813,114 @@ function Main.handInterface()
                     [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn10.tga"); ["TIME"] = 0.1; };
                 }
             end
+            if isLuting == true then
+                isLuting = false;
+                idleReset = true;
+                timerEnd = timerTen + 9;
+                Frames = {
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute1.tga"); ["TIME"] = 0.1; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute2.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute3.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute4.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute5.tga"); ["TIME"] = 0.1; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute6.tga"); ["TIME"] = 0.1; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute7.tga"); ["TIME"] = 0.1; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute8.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
+                }
+            end
+            if isLuteAttacking == true then
+                isLuteAttacking = false;
+                idleReset = true;
+                timerEnd = timerTen + 9;
+                Frames = {
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike1.tga"); ["TIME"] = 0.1; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike2.tga"); ["TIME"] = 0.1; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike3.tga"); ["TIME"] = 0.1; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike4.tga"); ["TIME"] = 0.1; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike5.tga"); ["TIME"] = 0.1; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike6.tga"); ["TIME"] = 0.1; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike7.tga"); ["TIME"] = 0.1; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike8.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
+                }
+            end
         end
     end
-    mountWindow:SetVisible(true);
-    mountWindow:SetPosition(1920 / 2 - mountWindow:GetWidth() / 2, 1080 - mountWindow:GetHeight());
-    mountWindow:SetMouseVisible(0);
-    mountWindow:SetZOrder(-2);
+
+----------- Mount Interface ---------------------
+---- Currently works for getting on the horse, but no off the horse
+--- Does not animate both windows at the same time
+--- Overriding the animation with another such as an emote overrides the mount window entirely
+    mountWindow = Turbine.UI.Window();
+    mountWindow:SetSize(1414, 1075);
+    mountWindow:SetWantsUpdates(true);
+    mountWindow.frameM = 10;
+    mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
+    mountWindow.Update = function(sender, args)
+        local deltaM = Turbine.Engine.GetGameTime() - mountWindow.LastUpdated;
+
+        if (deltaM > Frames[mountWindow.frameM]["TIME"]) then
+            mountWindow.frameM = mountWindow.frameM + 1;
+            if timerM ~= 0 then
+                Turbine.Shell.WriteLine("Timer TenM " .. timerMEnd);
+            end
+            if (mountWindow.frameM > 10) then
+                mountWindow.frameM = 1;
+            end
+            mountWindow:SetBackground(Frames[mountWindow.frameM]["IMAGE"]);
+            mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
+
+            playerMount = nil;
+            playerMount = thePlayer:GetMount();
+            if (playerMount ~= nil) then
+			    isMounted = true;
+		    else
+			    isMounted = false;
+		    end
+            if (mountChecked == false) then
+                if isMounted == true then
+                    mountChecked = true;
+                    isRiding = true;
+                    Frames = {
+                        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = .15; };
+                        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse2.tga"); ["TIME"] = 0.2; };
+                        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse3.tga"); ["TIME"] = 0.2; };
+                        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse4.tga"); ["TIME"] = 0.2; };
+                        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse5.tga"); ["TIME"] = 0.2; };
+                        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse6.tga"); ["TIME"] = 0.2; };
+                        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse7.tga"); ["TIME"] = 0.2; };
+                        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse8.tga"); ["TIME"] = 0.2; };
+                        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse9.tga"); ["TIME"] = 0.2; };
+                        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = 0.15; };
+                    }
+                end
+            else
+                if (isRiding == true) then
+                    if (mountChecked == true) then
+                        if (isMounted == false) then
+                            Main.getPlayerState();
+                            Main.animateState();
+                            Main.handInterface();
+                            isRiding = false;
+                        end
+                    end
+                end
+            end
+        end
+    end
 
     handsWindow:SetVisible(true);
     handsWindow:SetPosition(1920 / 2 - handsWindow:GetWidth() / 2, 1080 - handsWindow:GetHeight());
     handsWindow:SetMouseVisible(0);
     handsWindow:SetZOrder(-1);
+
+    mountWindow:SetVisible(true);
+    mountWindow:SetPosition(1920 / 2 - mountWindow:GetWidth() / 2, 1080 - mountWindow:GetHeight());
+    mountWindow:SetMouseVisible(0);
+    mountWindow:SetZOrder(-2);
 end
 ---------------------------------------------------------------------------------------------------
 -------- End Commands (First played functions) ----------------------------------------------------
