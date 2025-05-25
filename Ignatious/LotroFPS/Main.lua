@@ -16,6 +16,8 @@ import "Turbine.UI.Lotro";
 ---------------------------------------------------------------------------------------------------
 local Main = {} -- Defines the module locally.
 local combatState;
+    local isInMelee = false;
+    local isInRanged = false;
 local isIdling = true;
 local idleReset = false;
 local isStriking = false;
@@ -47,6 +49,7 @@ thePlayer = Turbine.Gameplay.LocalPlayer.GetInstance();
 --allSkills = thePlayer:GetTrainedSkills();
 playerName = Turbine.Gameplay.LocalPlayer.GetName();
 playerMount = thePlayer:GetMount();
+playerClass = thePlayer:GetClass();
 
 Turbine.Shell.WriteLine("Lotro FPS Loaded!");
 
@@ -244,6 +247,13 @@ Turbine.Chat.Received = function(sender, args)
         local findSkillResults = string.find(textWithoutMarkup, playerName .. " scored a hit"); 
         if (findSkillResults ~= nil) then
             local whichSkill = findSkillResults;
+            -- Identifies that the player has now entered melee combat
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with a melee attack") then
+                Turbine.Shell.WriteLine("The player has entered melee combat!");
+                isInMelee = true;
+                Main.handInterface()
+            end
+            ------- Captain -------
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Battle") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you are screaming with Battle-Cry!");
                 isShouting = true;
@@ -321,22 +331,32 @@ Turbine.Chat.Received = function(sender, args)
                 isStabbing = true;
                 Main.handInterface()
             end
-            ------- Minstrel -------
+            ------- Minstrel Ranged -------
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Minor Ballad") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used a Minor Ballad!");
                 isLuteAttacking = true;
+                isInMelee = false;
                 Main.handInterface()
             end
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Coda of Fury") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Coda of Fury!");
                 isLuting = true;
+                isInMelee = false;
                 Main.handInterface()
             end
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Coda of Melody") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Coda of Melody!");
                 isLuting = true;
+                isInMelee = false;
                 Main.handInterface()
             end
+            if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Piercing Cry") then
+                Turbine.Shell.WriteLine("Lotro FPS detected that you are screaming with Piercing Cr!");
+                isShouting = true;
+                isInMelee = false;
+                Main.handInterface()
+            end
+            ------- Minstrel Melee -------
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Healer's Strike") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Healer's Strike!");
                 isAttackingA = true;
@@ -555,33 +575,52 @@ function Main.animateState()
         -- Idling should be true when every other state is false.
     if isIdling == true then
         Frames = {
-        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 3.5; };
-        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle1.tga"); ["TIME"] = 0.225; };
-        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle2.tga"); ["TIME"] = 0.225; };
-        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle3.tga"); ["TIME"] = 0.225; };
-        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle4.tga"); ["TIME"] = 0.225; };
-        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle5.tga"); ["TIME"] = 0.225; };
-        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle6.tga"); ["TIME"] = 0.15; };
-        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle7.tga"); ["TIME"] = 0.15; };
-        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle8.tga"); ["TIME"] = 0.15; };
-        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle9.tga"); ["TIME"] = 0.2; };
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 3.5; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle1.tga"); ["TIME"] = 0.225; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle2.tga"); ["TIME"] = 0.225; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle3.tga"); ["TIME"] = 0.225; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle4.tga"); ["TIME"] = 0.225; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle5.tga"); ["TIME"] = 0.225; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle6.tga"); ["TIME"] = 0.15; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle7.tga"); ["TIME"] = 0.15; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle8.tga"); ["TIME"] = 0.15; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle9.tga"); ["TIME"] = 0.2; };
         }
         return Main
     end
+    -- isStriking has conditions for ranged classes to determine whether they should be playing the melee loop
     if isStriking == true then
-        Frames = {
-        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = .1; };
-        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike1.tga"); ["TIME"] = 0.05; };
-        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike2.tga"); ["TIME"] = 0.025; };
-        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike3.tga"); ["TIME"] = 0.05; };
-        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike4.tga"); ["TIME"] = 0.025; };
-        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike5.tga"); ["TIME"] = 0.05; };
-        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike6.tga"); ["TIME"] = 0.05; };
-        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
-        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
-        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike9.tga"); ["TIME"] = 0.1; };
-        }
-        return Main
+        if playerClass == 31 then -- 31 = Minstrel
+            if isInMelee == true then
+                Frames = {
+                    [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = .1; };
+                    [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike1.tga"); ["TIME"] = 0.05; };
+                    [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike2.tga"); ["TIME"] = 0.025; };
+                    [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike3.tga"); ["TIME"] = 0.05; };
+                    [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike4.tga"); ["TIME"] = 0.025; };
+                    [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike5.tga"); ["TIME"] = 0.05; };
+                    [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike6.tga"); ["TIME"] = 0.05; };
+                    [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+                    [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+                    [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike9.tga"); ["TIME"] = 0.1; };
+                }
+            return Main
+            end
+        else -- Non-ranged classes do not require this condition
+            Frames = {
+                [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = .1; };
+                [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike1.tga"); ["TIME"] = 0.05; };
+                [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike2.tga"); ["TIME"] = 0.025; };
+                [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike3.tga"); ["TIME"] = 0.05; };
+                [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike4.tga"); ["TIME"] = 0.025; };
+                [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike5.tga"); ["TIME"] = 0.05; };
+                [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike6.tga"); ["TIME"] = 0.05; };
+                [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+                [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
+                [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike9.tga"); ["TIME"] = 0.1; };
+            }
+            return Main
+        end
     end
 end
 
