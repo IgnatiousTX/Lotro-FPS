@@ -10,6 +10,8 @@ import "Turbine";
 import "Turbine.Gameplay";
 import "Turbine.UI";
 import "Turbine.UI.Lotro";
+import "Ignatious.LotroFPS.Mount"
+import "Ignatious.LotroFPS.ChatStrings"
 
 ---------------------------------------------------------------------------------------------------
 -------- Misc Variables ---------------------------------------------------------------------------
@@ -34,23 +36,17 @@ local isPunching = false;
 local isHorning = false;
 local isLuting = false;
 local isLuteAttacking = false;
-local isMounted = false;
-    local mountChecked = false;
-    local isRiding = false;
 
 -- For RGB Testing, or for testing to Change color based on skill being used  (Change to Green when healing for instance)
 local colorHeal = Turbine.UI.Color(0.5,0.04,0.41,0.09);
 
 local timerTen = 0;
 local timerEnd = 11;
-local timerM = 0;
-local timerMEnd = 11;
 ResourceDir = "Ignatious/LotroFPS/Resources/";
 thePlayer = Turbine.Gameplay.LocalPlayer.GetInstance();
 --playerClass = thePlayer:GetClass();
 --allSkills = thePlayer:GetTrainedSkills();
 playerName = Turbine.Gameplay.LocalPlayer.GetName();
-playerMount = thePlayer:GetMount();
 playerClass = thePlayer:GetClass();
 
 Turbine.Shell.WriteLine("Lotro FPS Loaded!");
@@ -72,16 +68,6 @@ function Main.getPlayerState()
         Turbine.Shell.WriteLine("The player is not in combat!");
         isStriking = false;
         isIdling = true;
-    end
-    if playerMount == nil then
-		-- Not mounted
-        isMounted = false;
-        mountChecked = false;
-        Turbine.Shell.WriteLine("The player is not mounted!");
-	else
-		-- Mounted 
-        isMounted = true;
-        Turbine.Shell.WriteLine("The player is mounted!");
     end
 end
 
@@ -276,12 +262,6 @@ Turbine.Chat.Received = function(sender, args)
                 isAttackingA = true;
                 Main.handInterface()
             end
-            -- DOT affect that does not work well with the code
-            --if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Cutting Attack") then
-            --    Turbine.Shell.WriteLine("Lotro FPS detected that you used Cutting Attack!");
-            --    isAttackingA = true;
-            --    Main.handInterface()
-            --end
             if whichSkill == string.find(textWithoutMarkup,  playerName .. " scored a hit with Devastating Blow") then
                 Turbine.Shell.WriteLine("Lotro FPS detected that you used Devastating Blow!");
                 isPunching = true;
@@ -583,6 +563,18 @@ end
 ---------------------------------------------------------------------------------------------------
 -------- Frame Structure --------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
+    NothingFrames = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+    }
     ChainIdleFrames = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 3.5; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle1.tga"); ["TIME"] = 0.225; };
@@ -751,21 +743,6 @@ end
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
     }
-    ---------------------------------------------------------------------------------------------------
-    -------- Horse Default ----------------------------------------------------------------------------
-    ---------------------------------------------------------------------------------------------------
-    HorseFrames = {
-        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = .15; };
-        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse2.tga"); ["TIME"] = 0.2; };
-        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse3.tga"); ["TIME"] = 0.2; };
-        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse4.tga"); ["TIME"] = 0.2; };
-        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse5.tga"); ["TIME"] = 0.2; };
-        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse6.tga"); ["TIME"] = 0.2; };
-        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse7.tga"); ["TIME"] = 0.2; };
-        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse8.tga"); ["TIME"] = 0.2; };
-        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse9.tga"); ["TIME"] = 0.2; };
-        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = 0.15; };
-    }
 
 ---------------------------------------------------------------------------------------------------
 -------- Animating Player BASE States -------------------------------------------------------------
@@ -924,66 +901,10 @@ function Main.handInterface()
         end
     end
 
------------ Mount Interface ---------------------
----- Currently works for getting on the horse, but no off the horse
---- Does not animate both windows at the same time
---- Overriding the animation with another such as an emote overrides the mount window entirely
-    mountWindow = Turbine.UI.Window();
-    mountWindow:SetSize(1414, 1075);
-    mountWindow:SetWantsUpdates(true);
-    mountWindow.frameM = 10;
-    mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
-    mountWindow.Update = function(sender, args)
-        local deltaM = Turbine.Engine.GetGameTime() - mountWindow.LastUpdated;
-
-        if (deltaM > Frames[mountWindow.frameM]["TIME"]) then
-            mountWindow.frameM = mountWindow.frameM + 1;
-            if timerM ~= 0 then
-                Turbine.Shell.WriteLine("Timer TenM " .. timerMEnd);
-            end
-            if (mountWindow.frameM > 10) then
-                mountWindow.frameM = 1;
-            end
-            mountWindow:SetBackground(Frames[mountWindow.frameM]["IMAGE"]);
-            mountWindow.LastUpdated = Turbine.Engine.GetGameTime();
-
-            playerMount = nil;
-            playerMount = thePlayer:GetMount();
-            if (playerMount ~= nil) then
-			    isMounted = true;
-		    else
-			    isMounted = false;
-		    end
-            if (mountChecked == false) then
-                if isMounted == true then
-                    mountChecked = true;
-                    isRiding = true;
-                        Frames = HorseFrames
-                end
-            else
-                if (isRiding == true) then
-                    if (mountChecked == true) then
-                        if (isMounted == false) then
-                            Main.getPlayerState();
-                            Main.animateState();
-                            Main.handInterface();
-                            isRiding = false;
-                        end
-                    end
-                end
-            end
-        end
-    end
-
     handsWindow:SetVisible(true);
     handsWindow:SetPosition(1920 / 2 - handsWindow:GetWidth() / 2, 1080 - handsWindow:GetHeight());
     handsWindow:SetMouseVisible(0);
     handsWindow:SetZOrder(-1);
-
-    mountWindow:SetVisible(true);
-    mountWindow:SetPosition(1920 / 2 - mountWindow:GetWidth() / 2, 1080 - mountWindow:GetHeight());
-    mountWindow:SetMouseVisible(0);
-    mountWindow:SetZOrder(-2);
 end
 ---------------------------------------------------------------------------------------------------
 -------- End Commands (First played functions) ----------------------------------------------------
