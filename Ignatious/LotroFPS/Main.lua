@@ -44,17 +44,18 @@ local function CreateLayerWin(frameset, isHorse)
         local delta = Turbine.Engine.GetGameTime() - self.LastUpdated
         if delta > self.frameset[self.frame].TIME then
             local nextFrame = self.frame + 1
-            Turbine.Shell.WriteLine(self.frame);
+          --Turbine.Shell.WriteLine(self.frame);
+          --Skipping here, counting 1,3,5,7,9
+            if thePlayer:IsInCombat() then
+                isInCombat = true;
+            else
+                isInCombat = false;
+            end
             if self.frameset.repeats then
                 self.frame = (nextFrame % 10) + 1 -- loops back to 1 after 10
             else
                 if nextFrame > #frameset then
                     self:ChangeAnimation('idle')
-                    if thePlayer:IsInCombat() then
-                        isInCombat = true;
-                    else
-                        isInCombat = false;
-                    end
                 else
                    self.frame = nextFrame
                 end
@@ -117,10 +118,10 @@ Turbine.Chat.Received = function(sender, args)
                 currentState = 'idle'
             end
         end
-        print("Lotro FPS detected that your state is: `"..currentState.."`");
         handsWindow:ChangeAnimation(currentState)
         if currentState.isoffhand == true then
             offWindow:SetVisible(true);
+                    print("Lotro FPS detected that your state is: `"..currentState.."`");
             offWindow:ChangeAnimation("buckler" .. currentState)
         else
             offWindow:SetVisible(false);

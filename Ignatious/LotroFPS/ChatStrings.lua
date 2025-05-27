@@ -19,11 +19,9 @@ local chatStrings = {
 	},
 	shout = {
 		playerName .. " applied a benefit with Rallying Cry",
-		playerName .. " applied a benefit with Words of Courage",
 		playerName .. " applied a benefit with Motivating Speech",
 		playerName .. " applied a benefit with Shanty",
 			playerName .. " applied a critical benefit with Rallying Cry",
-			playerName .. " applied a critical benefit with Words of Courage",
 			playerName .. " applied a critical benefit with Motivating Speech",
 			playerName .. " applied a critical benefit with Shanty",
 		playerName .. " scored a hit with Battle",
@@ -118,18 +116,18 @@ local chatStrings = {
 	luteStrike = {
 		playerName .. " scored a hit with Minor Ballad",
 		playerName .. " scored a hit with Major Ballad",
+		playerName .. " scored a hit with Perfect Ballad",
 		playerName .. " scored a hit with Coda of Fury",
 		playerName .. " scored a hit with Coda of Melody",
-		playerName .. " scored a hit with Piercing Cry",
 			playerName .. " scored a critical hit with Minor Ballad",
 			playerName .. " scored a critical hit with Major Ballad",
+			playerName .. " scored a critical hit with Perfect Ballad",
 			playerName .. " scored a critical hit with Coda of Fury",
-			playerName .. " scored a critical hit with Piercing Cry",
 			playerName .. " scored a critical hit with Coda of Melody",
 			playerName .. " scored a devastating hit with Minor Ballad",
 			playerName .. " scored a devastating hit with Major Ballad",
+			playerName .. " scored a devastating hit with Perfect Ballad",
 			playerName .. " scored a devastating hit with Coda of Fury",
-			playerName .. " scored a devastating hit with Piercing Cry",
 			playerName .. " scored a devastating hit with Coda of Melody",
 	},
 --	beg = {
@@ -156,9 +154,11 @@ local chatStrings = {
 	lute = {
 		playerName .. " applied a benefit with Minor Ballad",
 		playerName .. " applied a benefit with Major Ballad",
+		playerName .. " applied a benefit with Perfect Ballad",
 		playerName .. " applied a benefit with Raise the Spirit",
 			playerName .. " applied a critical benefit with Minor Ballad",
 			playerName .. " applied a critical benefit with Major Ballad",
+			playerName .. " applied a critical benefit with Perfect Ballad",
 			playerName .. " applied a critical benefit with Raise the Spirit",
 	},
 	point = {
@@ -166,10 +166,12 @@ local chatStrings = {
 		playerName .. " applied a benefit with Inspiriting Call",
 		playerName .. " applied a benefit with Cry of Vengeance",
 		playerName .. " applied a benefit with En Garde",
+		playerName .. " applied a benefit with Words of Courage",
 			playerName .. " applied a critical benefit with Shield",
 			playerName .. " applied a critical benefit with Inspiriting Call",
 			playerName .. " applied a critical benefit with Cry of Vengeance",
 			playerName .. " applied a critical benefit with En Garde",
+			playerName .. " applied a critical benefit with Words of Courage",
 
 		"You point",
 		"You poke",
@@ -188,7 +190,8 @@ local chatStrings = {
 	},
 	smoke = {
 		"You begin to smoke",
-	},
+	},vff
+	-- Deprecated with new structure
 --	melee = {
 --		playerName .. " scored a hit with a melee attack",
 --	}
