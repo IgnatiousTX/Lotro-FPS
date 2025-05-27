@@ -27,7 +27,7 @@ end
 -------- Create windows ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 
-local function CreateLayerWin(frameset, isHorse)
+local function CreateLayerWin(frameset, isHorse, isMainHand, isOffHand)
     local layer = Turbine.UI.Window()
     layer:SetSize(1414, 1075)
     layer:SetWantsUpdates(true)
@@ -87,6 +87,7 @@ end
 
 mountWindow = CreateLayerWin(Frames['horse'], true)
 handsWindow = CreateLayerWin(Frames['idle'])
+offWindow = CreateLayerWin(Frames['buckleridle'])
 
 ---------------------------------------------------------------------------------------------------
 -------- Set up chat parsing ----------------------------------------------------------------------
