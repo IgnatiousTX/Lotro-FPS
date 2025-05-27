@@ -27,7 +27,7 @@ end
 -------- Create windows ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 
-local function CreateLayerWin(frameset, isHorse, isMainHand, isOffHand)
+local function CreateLayerWin(frameset, isHorse)
     local layer = Turbine.UI.Window()
     layer:SetSize(1414, 1075)
     layer:SetWantsUpdates(true)
@@ -44,6 +44,7 @@ local function CreateLayerWin(frameset, isHorse, isMainHand, isOffHand)
         local delta = Turbine.Engine.GetGameTime() - self.LastUpdated
         if delta > self.frameset[self.frame].TIME then
             local nextFrame = self.frame + 1
+            Turbine.Shell.WriteLine(self.frame);
             if self.frameset.repeats then
                 self.frame = (nextFrame % 10) + 1 -- loops back to 1 after 10
             else
@@ -64,6 +65,7 @@ local function CreateLayerWin(frameset, isHorse, isMainHand, isOffHand)
         if isInCombat == false then
             if currentState == 'strike' then
                 currentState = 'idle';
+                offWindow:ChangeAnimation('buckleridle')
             end
         end
         if isHorse then -- probably not the best way to do this
@@ -86,8 +88,8 @@ local function CreateLayerWin(frameset, isHorse, isMainHand, isOffHand)
 end 
 
 mountWindow = CreateLayerWin(Frames['horse'], true)
+offWindow = CreateLayerWin(Frames["buckler" .. 'idle'])
 handsWindow = CreateLayerWin(Frames['idle'])
-offWindow = CreateLayerWin(Frames['buckleridle'])
 
 ---------------------------------------------------------------------------------------------------
 -------- Set up chat parsing ----------------------------------------------------------------------
@@ -117,6 +119,11 @@ Turbine.Chat.Received = function(sender, args)
         end
         print("Lotro FPS detected that your state is: `"..currentState.."`");
         handsWindow:ChangeAnimation(currentState)
-
+        if currentState.isoffhand == true then
+            offWindow:SetVisible(true);
+            offWindow:ChangeAnimation("buckler" .. currentState)
+        else
+            offWindow:SetVisible(false);
+        end
     end
 end
