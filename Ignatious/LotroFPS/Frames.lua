@@ -171,7 +171,7 @@ Frames = {
         [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute8.tga"); ["TIME"] = 0.1; };
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
-        repeats = false;
+        repeats = true;
     },
     luteStrike = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike1.tga"); ["TIME"] = 0.1; };
