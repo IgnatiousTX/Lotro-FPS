@@ -45,19 +45,20 @@ local function CreateLayerWin(frameset, isHorse)
         if delta > self.frameset[self.frame].TIME then
             local nextFrame = self.frame + 1
           --Turbine.Shell.WriteLine(self.frame);
-          --Skipping here, counting 1,3,5,7,9
+            --Skipping here, counting 1,3,5,7,9
             if thePlayer:IsInCombat() then
                 isInCombat = true;
             else
                 isInCombat = false;
             end
             if self.frameset.repeats then
-                self.frame = (nextFrame % 10) + 1 -- loops back to 1 after 10
+                self.frame = (nextFrame % 10) + 1; -- loops back to 1 after 10
             else
                 if nextFrame > #frameset then
-                    self:ChangeAnimation('idle')
+                    self:ChangeAnimation('idle');
+                    offWindow:ChangeAnimation("buckler" .. 'idle');
                 else
-                   self.frame = nextFrame
+                   self.frame = nextFrame;
                 end
             end
             self:SetBackground(self.frameset[self.frame].IMAGE)
@@ -66,31 +67,32 @@ local function CreateLayerWin(frameset, isHorse)
         if isInCombat == false then
             if currentState == 'strike' then
                 currentState = 'idle';
-                offWindow:ChangeAnimation('buckleridle')
+                offWindow:SetVisible(true);
+                offWindow:ChangeAnimation("buckler" .. 'idle');
             end
         end
         if isHorse then -- probably not the best way to do this
-            local isMounted = thePlayer:GetMount() ~= nil
-            local selfIsVisible = self:IsVisible()
+            local isMounted = thePlayer:GetMount() ~= nil;
+            local selfIsVisible = self:IsVisible();
             if isMounted and not selfIsVisible then
-                self:ChangeAnimation('horse')
-                self:SetVisible(true)
+                self:ChangeAnimation('horse');
+                self:SetVisible(true);
             elseif not isMounted and selfIsVisible then
-                self:SetVisible(false)
+                self:SetVisible(false);
             end
         end
     end
     layer.ChangeAnimation = function(self, frameset)
-        self.frameset = Frames[frameset]
-        self.frame = 1
-        self.LastUpdated = Turbine.Engine.GetGameTime()
+        self.frameset = Frames[frameset];
+        self.frame = 1;
+        self.LastUpdated = Turbine.Engine.GetGameTime();
     end
     return layer
 end 
 
-mountWindow = CreateLayerWin(Frames['horse'], true)
-offWindow = CreateLayerWin(Frames["buckler" .. 'idle'])
-handsWindow = CreateLayerWin(Frames['idle'])
+mountWindow = CreateLayerWin(Frames['horse'], true);
+offWindow = CreateLayerWin(Frames["buckler" .. 'idle']);
+handsWindow = CreateLayerWin(Frames['idle']);
 
 ---------------------------------------------------------------------------------------------------
 -------- Set up chat parsing ----------------------------------------------------------------------
@@ -113,18 +115,12 @@ Turbine.Chat.Received = function(sender, args)
         currentState = ChatStrings.GetState(textWithoutMarkup)
         if currentState == nil then 
             if isInCombat == true then
-                currentState = 'strike'
+                currentState = 'strike';
             else
-                currentState = 'idle'
+                currentState = 'idle';
             end
         end
-        handsWindow:ChangeAnimation(currentState)
-        if currentState.isoffhand == true then
-            offWindow:SetVisible(true);
-                    print("Lotro FPS detected that your state is: `"..currentState.."`");
-            offWindow:ChangeAnimation("buckler" .. currentState)
-        else
-            offWindow:SetVisible(false);
-        end
+        handsWindow:ChangeAnimation(currentState);
+        offWindow:ChangeAnimation("buckler" .. currentState);
     end
 end

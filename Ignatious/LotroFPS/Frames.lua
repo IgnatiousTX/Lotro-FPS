@@ -20,7 +20,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle8.tga"); ["TIME"] = 0.15; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Idle9.tga"); ["TIME"] = 0.2; };
         repeats = true;
-        isoffhand = true;
     },
         buckleridle = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerDefault.tga"); ["TIME"] = 3.5; };
@@ -34,7 +33,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerIdle8.tga"); ["TIME"] = 0.15; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerIdle9.tga"); ["TIME"] = 0.2; };
             repeats = true;
-            isoffhand = true;
         },
     strike = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = .1; };
@@ -48,7 +46,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike78.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Strike9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerstrike = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerDefault.tga"); ["TIME"] = 0.1; };
@@ -62,7 +59,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerStrike78.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerStrike9.tga"); ["TIME"] = 0.1; };
             repeats = false;
-            isoffhand = true;
         },
     wave = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "DefaultFrame.tga"); ["TIME"] = 0.05; };
@@ -76,8 +72,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Wave9.tga"); ["TIME"] = 0.15; };
         repeats = false;
-        isoffhand = false;
     },
+        bucklerwave = {
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.05; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.15; };
+            repeats = false;
+        },
     shout = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout1.tga"); ["TIME"] = 0.05; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout1.tga"); ["TIME"] = 0.05; };
@@ -90,8 +98,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Shout9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = false;
     },
+        bucklershout = {
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.05; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.05; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.25; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            repeats = false;
+        },
     shoutB = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB1.tga"); ["TIME"] = 0.05; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB1.tga"); ["TIME"] = 0.05; };
@@ -104,7 +124,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ShoutB9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = true;
     },
         bucklershoutB = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerShoutB1.tga"); ["TIME"] = 0.05; };
@@ -118,7 +137,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerShoutB8.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerShoutB9.tga"); ["TIME"] = 0.1; };
             repeats = false;
-            isoffhand = true;
         },
     smoke = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "PipeDefault.tga"); ["TIME"] = 1; };
@@ -132,8 +150,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe8.tga"); ["TIME"] = 0.2; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Pipe9.tga"); ["TIME"] = 0.2; };
         repeats = true;
-        isoffhand = false;
     },
+        bucklersmoke = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 1; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.15; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.15; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.15; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.3; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.4; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            repeats = true;
+        },
     parry = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry1.tga"); ["TIME"] = 0.05; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry1.tga"); ["TIME"] = 0.05; };
@@ -146,7 +176,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Parry9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerparry = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerParry1.tga"); ["TIME"] = 0.05; };
@@ -160,7 +189,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerParry8.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerParry9.tga"); ["TIME"] = 0.1; };
             repeats = false;
-            isoffhand = true;
         },
     attackingA = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA1.tga"); ["TIME"] = 0.05; };
@@ -174,7 +202,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA8.tga"); ["TIME"] = 0.05; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "AttackA9.tga"); ["TIME"] = 0.05; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerattackingA = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerAttackA1.tga"); ["TIME"] = 0.05; };
@@ -188,7 +215,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerAttackA8.tga"); ["TIME"] = 0.05; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerAttackA9.tga"); ["TIME"] = 0.05; };
             repeats = false;
-            isoffhand = true;
         },
     stabbing = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab1.tga"); ["TIME"] = 0.05; };
@@ -202,7 +228,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Stab9.tga"); ["TIME"] = 0.15; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerstabbing = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerStabbing1.tga"); ["TIME"] = 0.05; };
@@ -216,7 +241,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerStabbing8.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerStabbing9.tga"); ["TIME"] = 0.15; };
             repeats = false;
-            isoffhand = true;
         },
     point = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point1.tga"); ["TIME"] = 0.05; };
@@ -230,8 +254,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Point9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = false;
     },
+        bucklerpoint = {
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.05; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.05; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.2; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            repeats = false;
+        },
     punching = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch1.tga"); ["TIME"] = 0.05; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch1.tga"); ["TIME"] = 0.05; };
@@ -244,7 +280,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch8.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Punch8.tga"); ["TIME"] = 0; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerpunching = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerPunch1.tga"); ["TIME"] = 0.05; };
@@ -258,7 +293,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerPunch789.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerPunch789.tga"); ["TIME"] = 0; };
             repeats = false;
-            isoffhand = true;
         },
     horn = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn1.tga"); ["TIME"] = 0.075; };
@@ -272,7 +306,6 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn9.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horn10.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = true;
     },
         bucklerhorn = {
             [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerHorn1.tga"); ["TIME"] = 0.075; };
@@ -286,7 +319,6 @@ Frames = {
             [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerHorn9.tga"); ["TIME"] = 0.1; };
             [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "BucklerHorn1.tga"); ["TIME"] = 0.1; };
             repeats = false;
-            isoffhand = true;
         },
     lute = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute1.tga"); ["TIME"] = 0.1; };
@@ -300,8 +332,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Lute9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = false;
     },
+        bucklerlute = {
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            repeats = false;
+        },
     luteStrike = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike1.tga"); ["TIME"] = 0.1; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike2.tga"); ["TIME"] = 0.1; };
@@ -314,8 +358,20 @@ Frames = {
         [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "LuteStrike9.tga"); ["TIME"] = 0.1; };
         repeats = false;
-        isoffhand = false;
     },
+        bucklerluteStrike = {
+            [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
+            repeats = false;
+        },
     horse = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = .15; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse2.tga"); ["TIME"] = 0.2; };
