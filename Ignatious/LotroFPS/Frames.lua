@@ -385,6 +385,19 @@ Frames = {
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Horse1.tga"); ["TIME"] = 0.15; };
         repeats = true;
     },
+    horsearmor = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm1.tga"); ["TIME"] = .15; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm2.tga"); ["TIME"] = 0.2; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm3.tga"); ["TIME"] = 0.2; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm4.tga"); ["TIME"] = 0.2; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm5.tga"); ["TIME"] = 0.2; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm6.tga"); ["TIME"] = 0.2; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm7.tga"); ["TIME"] = 0.2; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm8.tga"); ["TIME"] = 0.2; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm9.tga"); ["TIME"] = 0.2; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm10.tga"); ["TIME"] = 0.15; };
+        repeats = true;
+    },
     invisible = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };

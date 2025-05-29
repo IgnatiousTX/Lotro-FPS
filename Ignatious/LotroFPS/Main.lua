@@ -173,6 +173,31 @@ function DrawOptionsControl()
     offhandCheckbox.CheckedChanged = function(sender, args)
         offChecked = offhandCheckbox:IsChecked();
     end
+
+    -- Mount Variants
+    local mountLabel = Turbine.UI.Label();
+    mountLabel:SetParent(options);
+    mountLabel:SetSize(250, 25);
+    mountLabel:SetText("Mount Settings: ");
+    mountLabel:SetPosition(10, 50)
+
+    local mountScrollbar = Turbine.UI.Lotro.ScrollBar();
+    mountScrollbar:SetParent(options);
+    mountScrollbar:SetSize(50, 10);
+    mountScrollbar:SetPosition(10, 65)
+    mountScrollbar:SetMinimum(0);
+    mountScrollbar:SetMaximum(1);
+    mountScrollbar.ValueChanged = function(sender, args)
+        local mountValue = mountScrollbar:GetValue();
+        if mountValue == 0 then
+            mountAnim = "horse"
+            mountLabel:SetText("Mount Settings: Horse");
+        end
+        if mountValue == 1 then
+            mountAnim = "horsearmor"
+            mountLabel:SetText("Mount Settings: Armored Horse");
+        end
+    end
 end
 DrawOptionsControl();
 print("LotroFPS loaded...")
