@@ -1,7 +1,4 @@
----- Class Related Notes
--- Captain, skills work great, timing could be tweaked but transitions feel good.
--- Minstrel, the constant attack animation during combat makes the transition to range attacks rather jarring.
--- Mariner, untested.
+
 
 ---------------------------------------------------------------------------------------------------
 -------- Imports ----------------------------------------------------------------------------------
@@ -12,7 +9,6 @@ import "Turbine.UI";
 import "Turbine.UI.Lotro";
 import "Ignatious.LotroFPS.Frames"
 import "Ignatious.LotroFPS.ChatStrings"
-
 ---------------------------------------------------------------------------------------------------
 
 local currentState = 'idle'
@@ -22,6 +18,11 @@ local isInCombat = false;
 local print = function(str)
     Turbine.Shell.WriteLine(tostring(str))
 end
+
+offHandItem = "buckler";
+
+-- Options Variables
+offChecked = true;
 
 ---------------------------------------------------------------------------------------------------
 -------- Create windows ---------------------------------------------------------------------------
@@ -44,32 +45,26 @@ local function CreateLayerWin(frameset, isHorse)
         local delta = Turbine.Engine.GetGameTime() - self.LastUpdated
         if delta > self.frameset[self.frame].TIME then
             local nextFrame = self.frame + 1
-          --Turbine.Shell.WriteLine(self.frame);
-            --Skipping here, counting 1,3,5,7,9
             if thePlayer:IsInCombat() then
                 isInCombat = true;
             else
                 isInCombat = false;
             end
-            if self.frameset.repeats then
-                self.frame = (nextFrame % 10) + 1; -- loops back to 1 after 10
-            else
-                if nextFrame > #frameset then
-                    self:ChangeAnimation('idle');
-                    offWindow:ChangeAnimation("buckler" .. 'idle');
-                else
-                   self.frame = nextFrame;
+            if nextFrame > #frameset then
+                self.frame = 1;
+                if not self.frameset.repeats then
+                    currentState = 'idle';
+                    self:ChangeAnimation('idle')
+                    offWindow:ChangeAnimation(offHandItem .. 'idle')
                 end
+            else
+                self.frame = nextFrame;
             end
             self:SetBackground(self.frameset[self.frame].IMAGE)
             self.LastUpdated = Turbine.Engine.GetGameTime()
         end
-        if isInCombat == false then
-            if currentState == 'strike' then
-                currentState = 'idle';
-                offWindow:SetVisible(true);
-                offWindow:ChangeAnimation("buckler" .. 'idle');
-            end
+        if self.ExtendedUpdate then
+            self:ExtendedUpdate()
         end
         if isHorse then -- probably not the best way to do this
             local isMounted = thePlayer:GetMount() ~= nil;
@@ -91,7 +86,26 @@ local function CreateLayerWin(frameset, isHorse)
 end 
 
 mountWindow = CreateLayerWin(Frames['horse'], true);
-offWindow = CreateLayerWin(Frames["buckler" .. 'idle']);
+
+offWindow = CreateLayerWin(Frames[offHandItem .. "idle"])
+offWindow.ExtendedUpdate = function(self)
+    if offChecked == true then
+        local offIsVisible = self:IsVisible()
+        if not isInCombat and not offIsVisible then
+            self:ChangeAnimation(offHandItem .. 'idle');
+            self:SetVisible(true)
+        end
+        if isInCombat == false then
+            if currentState == 'strike' then
+                self:ChangeAnimation(offHandItem .. 'idle');
+                self:SetVisible(true)
+            end
+        end
+    else
+        self:ChangeAnimation('invisible');
+    end
+end
+
 handsWindow = CreateLayerWin(Frames['idle']);
 
 ---------------------------------------------------------------------------------------------------
@@ -121,6 +135,42 @@ Turbine.Chat.Received = function(sender, args)
             end
         end
         handsWindow:ChangeAnimation(currentState);
-        offWindow:ChangeAnimation("buckler" .. currentState);
+        offWindow:ChangeAnimation(offHandItem .. currentState);
     end
 end
+
+---------------------------------------------------------------------------------------------------
+-------- Set up Options ----------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
+function DrawOptionsControl()
+    options = Turbine.UI.Control();
+    plugin.GetOptionsPanel = function(self) return options; end
+
+    options:SetBackColor(Turbine.UI.Color.DimGray) -- 0 = 0, 1 = 255
+    options:SetSize(250, 250)
+
+    -- add a label for the scrollbar
+    local offhandLabel = Turbine.UI.Label();
+    offhandLabel:SetParent(options);
+    offhandLabel:SetSize(200, 25);
+    offhandLabel:SetText("Offhand Settings:");
+    offhandLabel:SetPosition(10, 10)
+
+    -- Visibility
+    local offhandLabel = Turbine.UI.Label();
+    offhandLabel:SetParent(options);
+    offhandLabel:SetSize(200, 25);
+    offhandLabel:SetText("     Visibility:");
+    offhandLabel:SetPosition(10, 30)
+    local offhandCheckbox = Turbine.UI.Lotro.CheckBox();
+    offhandCheckbox:SetParent(options);
+    offhandCheckbox:SetSize(20, 20);
+    offhandCheckbox:SetPosition(150, 25)
+    offhandCheckbox:SetChecked(1);
+    offhandCheckbox.CheckedChanged = function(sender, args)
+        offChecked = offhandCheckbox:IsChecked();
+    end
+end
+DrawOptionsControl();
+print("LotroFPS loaded...")
