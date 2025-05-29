@@ -20,9 +20,11 @@ local print = function(str)
 end
 
 offHandItem = "buckler";
+mountAnim = "horse"
 
 -- Options Variables
 offChecked = true;
+
 
 ---------------------------------------------------------------------------------------------------
 -------- Create windows ---------------------------------------------------------------------------
@@ -50,7 +52,7 @@ local function CreateLayerWin(frameset, isHorse)
             else
                 isInCombat = false;
             end
-            if nextFrame > #frameset then
+            if nextFrame > 10 then
                 self.frame = 1;
                 if not self.frameset.repeats then
                     currentState = 'idle';
@@ -66,16 +68,6 @@ local function CreateLayerWin(frameset, isHorse)
         if self.ExtendedUpdate then
             self:ExtendedUpdate()
         end
-        if isHorse then -- probably not the best way to do this
-            local isMounted = thePlayer:GetMount() ~= nil;
-            local selfIsVisible = self:IsVisible();
-            if isMounted and not selfIsVisible then
-                self:ChangeAnimation('horse');
-                self:SetVisible(true);
-            elseif not isMounted and selfIsVisible then
-                self:SetVisible(false);
-            end
-        end
     end
     layer.ChangeAnimation = function(self, frameset)
         self.frameset = Frames[frameset];
@@ -85,26 +77,36 @@ local function CreateLayerWin(frameset, isHorse)
     return layer
 end 
 
-mountWindow = CreateLayerWin(Frames['horse'], true);
+mountWindow = CreateLayerWin(Frames[mountAnim], true);
+    mountWindow.ExtendedUpdate = function(self)
+        local isMounted = thePlayer:GetMount() ~= nil
+        local selfIsVisible = self:IsVisible()
+        if isMounted and not selfIsVisible then
+            self:ChangeAnimation(mountAnim)
+            self:SetVisible(true)
+        elseif not isMounted and selfIsVisible then
+            self:SetVisible(false)
+        end
+    end
 
 offWindow = CreateLayerWin(Frames[offHandItem .. "idle"])
-offWindow.ExtendedUpdate = function(self)
-    if offChecked == true then
-        local offIsVisible = self:IsVisible()
-        if not isInCombat and not offIsVisible then
-            self:ChangeAnimation(offHandItem .. 'idle');
-            self:SetVisible(true)
-        end
-        if isInCombat == false then
-            if currentState == 'strike' then
+    offWindow.ExtendedUpdate = function(self)
+        if offChecked == true then
+            local offIsVisible = self:IsVisible()
+            if not isInCombat and not offIsVisible then
                 self:ChangeAnimation(offHandItem .. 'idle');
                 self:SetVisible(true)
             end
+            if isInCombat == false then
+                if currentState == 'strike' then
+                    self:ChangeAnimation(offHandItem .. 'idle');
+                    self:SetVisible(true)
+                end
+            end
+        else
+            self:ChangeAnimation('invisible');
         end
-    else
-        self:ChangeAnimation('invisible');
     end
-end
 
 handsWindow = CreateLayerWin(Frames['idle']);
 
