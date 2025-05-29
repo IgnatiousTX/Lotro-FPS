@@ -164,11 +164,15 @@ function DrawOptionsControl()
     offhandLabel:SetParent(options);
     offhandLabel:SetSize(200, 25);
     offhandLabel:SetText("     Visibility:");
-    offhandLabel:SetPosition(10, 30)
+    offhandLabel:SetPosition(10, 50)
+    local offhandScrollbar = Turbine.UI.Lotro.ScrollBar();
+    offhandScrollbar:SetParent(options);
+    offhandScrollbar:SetSize(100, 10);
+    offhandScrollbar:SetPosition(15, 30)
     local offhandCheckbox = Turbine.UI.Lotro.CheckBox();
     offhandCheckbox:SetParent(options);
     offhandCheckbox:SetSize(20, 20);
-    offhandCheckbox:SetPosition(150, 25)
+    offhandCheckbox:SetPosition(150, 45)
     offhandCheckbox:SetChecked(1);
     offhandCheckbox.CheckedChanged = function(sender, args)
         offChecked = offhandCheckbox:IsChecked();
@@ -179,14 +183,14 @@ function DrawOptionsControl()
     mountLabel:SetParent(options);
     mountLabel:SetSize(250, 25);
     mountLabel:SetText("Mount Settings: ");
-    mountLabel:SetPosition(10, 50)
+    mountLabel:SetPosition(10, 70)
 
     local mountScrollbar = Turbine.UI.Lotro.ScrollBar();
     mountScrollbar:SetParent(options);
-    mountScrollbar:SetSize(50, 10);
-    mountScrollbar:SetPosition(10, 65)
+    mountScrollbar:SetSize(100, 10);
+    mountScrollbar:SetPosition(15, 85)
     mountScrollbar:SetMinimum(0);
-    mountScrollbar:SetMaximum(1);
+    mountScrollbar:SetMaximum(4);
     mountScrollbar.ValueChanged = function(sender, args)
         local mountValue = mountScrollbar:GetValue();
         if mountValue == 0 then
@@ -196,6 +200,18 @@ function DrawOptionsControl()
         if mountValue == 1 then
             mountAnim = "horsearmor"
             mountLabel:SetText("Mount Settings: Armored Horse");
+        end
+        if mountValue == 2 then
+            mountAnim = "donkey"
+            mountLabel:SetText("Mount Settings: Donkey");
+        end
+        if mountValue == 3 then
+            mountAnim = "elk"
+            mountLabel:SetText("Mount Settings: Elk");
+        end
+        if mountValue == 4 then
+            mountAnim = "elkarmor"
+            mountLabel:SetText("Mount Settings: Armored Elk");
         end
     end
 end

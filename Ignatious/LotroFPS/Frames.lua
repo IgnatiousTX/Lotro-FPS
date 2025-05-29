@@ -398,6 +398,45 @@ Frames = {
         [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "HorseArm10.tga"); ["TIME"] = 0.15; };
         repeats = true;
     },
+    donkey = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey1.tga"); ["TIME"] = .15; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey2.tga"); ["TIME"] = 0.2; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey3.tga"); ["TIME"] = 0.2; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey4.tga"); ["TIME"] = 0.2; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey5.tga"); ["TIME"] = 0.2; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey6.tga"); ["TIME"] = 0.2; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey7.tga"); ["TIME"] = 0.2; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey8.tga"); ["TIME"] = 0.2; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey9.tga"); ["TIME"] = 0.2; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Donkey10.tga"); ["TIME"] = 0.15; };
+        repeats = true;
+    },
+    elk = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk1.tga"); ["TIME"] = .15; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk2.tga"); ["TIME"] = 0.2; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk3.tga"); ["TIME"] = 0.2; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk4.tga"); ["TIME"] = 0.2; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk5.tga"); ["TIME"] = 0.2; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk6.tga"); ["TIME"] = 0.2; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk7.tga"); ["TIME"] = 0.2; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk8.tga"); ["TIME"] = 0.2; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk9.tga"); ["TIME"] = 0.2; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Elk10.tga"); ["TIME"] = 0.15; };
+        repeats = true;
+    },
+    elkarmor = {
+        [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm1.tga"); ["TIME"] = .15; };
+        [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm2.tga"); ["TIME"] = 0.2; };
+        [3] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm3.tga"); ["TIME"] = 0.2; };
+        [4] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm4.tga"); ["TIME"] = 0.2; };
+        [5] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm5.tga"); ["TIME"] = 0.2; };
+        [6] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm6.tga"); ["TIME"] = 0.2; };
+        [7] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm7.tga"); ["TIME"] = 0.2; };
+        [8] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm8.tga"); ["TIME"] = 0.2; };
+        [9] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm9.tga"); ["TIME"] = 0.2; };
+        [10] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "ElkArm10.tga"); ["TIME"] = 0.15; };
+        repeats = true;
+    },
     invisible = {
         [1] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
         [2] = { ["IMAGE"] = Turbine.UI.Graphic(ResourceDir .. "Invisible.tga"); ["TIME"] = 0.1; };
